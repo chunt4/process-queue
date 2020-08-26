@@ -17,7 +17,10 @@
  **/
 Process *process_create(const char *command) {
     /* TODO: Implement */
-    return NULL;
+    size_t size = sizeof(char) + sizeof(pid_t) + 3*(sizeof(double));
+    Process *p = malloc(size);
+    p->command = command;
+    return p;
 }
 
 /**
@@ -27,7 +30,25 @@ Process *process_create(const char *command) {
  **/
 bool process_start(Process *p) {
     /* TODO: Implement */
-    return false;
+    p->pid = fork();
+    if (p->pid < 0){
+        fprintf(stderr, "Fork failed: %s\n", strerror(errno));
+        return false;
+    }
+    else if (p->pid == 0){
+        char *argv[] = {0}
+        for (char *token = strtok(p->command, " "); token; token = strtok(NULL, " ")){
+            argv[i++] = token;
+        }
+        if (!execvp(argv[0], argv)){
+            return false;
+        }
+    }
+    else{
+        //Update timestamp
+    }
+
+    return true;
 }
 
 /**
