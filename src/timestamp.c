@@ -19,10 +19,10 @@ double timestamp() {
     struct timeval tv;
     double seconds;
 
-    if (!gettimeofday(&tv, NULL))
-        seconds = time(NULL);
-    else
+    if (gettimeofday(&tv, NULL) == 0)
         seconds = tv.tv_sec + (tv.tv_usec/1000000.0);
+    else
+        seconds = time(NULL);
     
     return seconds;
 }
