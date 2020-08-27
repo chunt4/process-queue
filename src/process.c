@@ -17,7 +17,7 @@
  **/
 Process *process_create(const char *command) {
     /* TODO: Implement */
-    size_t size = sizeof(char) + sizeof(pid_t) + 3*(sizeof(double));
+    size_t size = sizeof(char) + sizeof(pid_t) + sizeof(Process*) + 3*(sizeof(double));
     Process *p = malloc(size);
     p->command = command;
     return p;
@@ -36,7 +36,7 @@ bool process_start(Process *p) {
         return false;
     }
     else if (p->pid == 0){
-        char *argv[] = {0}
+        char *argv[] = {0};
         for (char *token = strtok(p->command, " "); token; token = strtok(NULL, " ")){
             argv[i++] = token;
         }
@@ -46,6 +46,7 @@ bool process_start(Process *p) {
     }
     else{
         //Update timestamp
+        p->arrival_time = timestamp();
     }
 
     return true;
@@ -58,7 +59,12 @@ bool process_start(Process *p) {
  **/
 bool process_pause(Process *p) {
     /* TODO: Implement */
-    return false;
+    if(kill(p->pid,SIGSTOP)){
+        return true;
+    }
+    else{
+        return false;
+    }
 }
 
 /**
@@ -68,7 +74,12 @@ bool process_pause(Process *p) {
  **/
 bool process_resume(Process *p) {
     /* TODO: Implement */
-    return false;
+    if(kill(p->pid,SIGCONT)){
+        return true;
+    }
+    else{
+        return false;
+    }
 }
 
 /* vim: set expandtab sts=4 sw=4 ts=8 ft=c: */

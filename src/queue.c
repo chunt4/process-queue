@@ -11,6 +11,8 @@
  **/
 void        queue_push(Queue *q, Process *p) {
     /* TODO: Implement */
+    q->tail->next=p;
+    q->tail=p;
 }
 
 /**
@@ -20,7 +22,7 @@ void        queue_push(Queue *q, Process *p) {
  **/
 Process *   queue_pop(Queue *q) {
     /* TODO: Implement */
-    return NULL;
+    return q->head;
 }
 
 /**
@@ -31,6 +33,10 @@ Process *   queue_pop(Queue *q) {
  **/
 Process *   queue_remove(Queue *q, pid_t pid) {
     /* TODO: Implement */
+    for (Process *p = q->head; q->tail; p=p->next){
+        if(pid==p->pid)
+            return p;
+    }
     return NULL;
 }
 
@@ -43,6 +49,9 @@ void        queue_dump(Queue *q, FILE *fs) {
     fprintf(fs, "%6s %-30s %-13s %-13s %-13s\n", 
                 "PID", "COMMAND", "ARRIVAL", "START", "END");
     /* TODO: Display information for each item in Queue. */
+    for (Process *p = q->head; q->tail; p=p->next){
+        fprintf(fs, "%6s %-30s %-13s %-13s %-13s\n", p->pid, p->command, p->arrival_time, p->start_time, p->end_time);
+    }
 }
 
 /* vim: set expandtab sts=4 sw=4 ts=8 ft=c: */
