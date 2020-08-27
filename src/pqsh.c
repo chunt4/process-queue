@@ -39,7 +39,10 @@ int main(int argc, char *argv[]) {
     }
 
     /* TODO: Register signal handlers */
-
+    if(!signal_register(signum, flags, handler)){
+        fprintf(stderr, "Signal handlers register failed");
+        return EXIT_FAILURE;
+    }    
 
     /* TODO: Start timer interrupt */
     struct itimerval timer = calloc(1, sizeof(itimerval));
