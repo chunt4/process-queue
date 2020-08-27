@@ -33,6 +33,10 @@ int main(int argc, char *argv[]) {
     Scheduler *s = &PQShellScheduler;
 
     /* TODO: Parse command line options */
+    if (!parse_command_line_options(argc, argv[], &s)){
+        fprintf(stderr, "Parsing Failure");
+        return EXIT_FAILURE;
+    }
 
     /* TODO: Register signal handlers */
 
