@@ -40,7 +40,14 @@ int main(int argc, char *argv[]) {
 
     /* TODO: Register signal handlers */
 
+
     /* TODO: Start timer interrupt */
+    struct itimerval timer = calloc(1, sizeof(itimerval));
+    timer->it_interval->tv_usec = s->timeout;
+    timer->it_value->tv_usec = s->timeout;
+
+    if (setitimer(ITIMER_REAL, &timer, NULL) < 0)
+        return EXIT_FAILURE;
 
     /* TODO: Process shell comands */
     while (!feof(stdin)) {
