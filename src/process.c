@@ -46,7 +46,7 @@ bool process_start(Process *p) {
     }
     else{
         //Update timestamp
-        p->arrival_time = timestamp();
+        p->start_time = timestamp();
     }
 
     return true;
