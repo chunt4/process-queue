@@ -30,6 +30,9 @@ void        queue_push(Queue *q, Process *p) {
  **/
 Process *   queue_pop(Queue *q) {
     /* TODO: Implement */
+    if (q->size == 0)
+        return NULL;
+
     Process *temp = q->head;
     q->head = q->head->next;
     temp->next = NULL;

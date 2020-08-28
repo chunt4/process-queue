@@ -45,9 +45,10 @@ int main(int argc, char *argv[]) {
     }    
 
     /* TODO: Start timer interrupt */
-    struct itimerval timer;
-    timer.it_interval.tv_usec = s->timeout;
-    timer.it_value.tv_usec = s->timeout;
+    struct itimerval timer = {
+        .it_interval = { .tv_sec = 0, .tv_usec = s->timeout },
+        .it_value = { .tv_sec = 0, .tv_usec = s->timeout },
+    };
 
     if (setitimer(ITIMER_REAL, &timer, NULL) < 0)
         return EXIT_FAILURE;
