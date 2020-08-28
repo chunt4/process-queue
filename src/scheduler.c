@@ -63,6 +63,14 @@ void scheduler_wait(Scheduler *s) {
 
     // MORE NOTES
     // Metrics are s->total_turnaround_time and s->total_response_time
+    while ((pid = waitpid(-1, NULL, WNOHAND)) > 0){
+        Process *found = queue_remove(&s->running, pid);
+        // Update Metrics
+        found->end_time = timestamp();
+        // Move to finished queue
+        queue_push(&s->finished, found);
+        
+    }
 }
 
 /* vim: set expandtab sts=4 sw=4 ts=8 ft=c: */
