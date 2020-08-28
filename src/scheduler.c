@@ -29,6 +29,12 @@ void scheduler_add(Scheduler *s, FILE *fs, const char *command) {
 void scheduler_status(Scheduler *s, FILE *fs, int queue) {
     fprintf(fs, "Running = %4lu, Waiting = %4lu, Finished = %4lu, Turnaround = %05.2lf, Response = %05.2lf\n");
     /* TODO: Complement implementation. */
+    if (queue & WAITING && s->waiting.size != 0)
+        queue_dump(&s->waiting, fs);
+    if (queue & RUNNING && s->running.size != 0)
+        queue_dump(&s->running, fs);
+    if (queue & FINISHED && s->finished.size != 0)
+        queue_dump(&s->finished, fs);
 }
 
 /**
@@ -37,6 +43,10 @@ void scheduler_status(Scheduler *s, FILE *fs, int queue) {
  **/
 void scheduler_next(Scheduler *s) {
     /* TODO: Dispatch to appropriate scheduler function. */
+    if (s->policy == FIFO_POLICY)
+        scheduler_fifo(s);
+    else if (s->policy == RDRN_POLICY)
+        scheduler_rdrn(s);
 }
 
 /**
