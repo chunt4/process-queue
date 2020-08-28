@@ -15,6 +15,9 @@
  **/
 void scheduler_add(Scheduler *s, FILE *fs, const char *command) {
     /* TODO: Implement */
+    Process *p = process_create(command);
+    queue_push(&s->waiting, p);
+    fprintf(fs, "Added process \"%s\" to waiting queue.\n", command);
 }
 
 /**

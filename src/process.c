@@ -17,10 +17,23 @@
  **/
 Process *process_create(const char *command) {
     /* TODO: Implement */
+    Process *p = (Process *)calloc(0, sizeof(Process));
+    if (p == NULL)
+        exit(1);
+    
+    // Set up parts of process
+    strcpy(p->command, command);
+    p->pid = 0;
+    p->arrival_time = 0.00;
+    p->start_time = 0.00;
+    p->end_time = 0.00;
+    p->next = NULL;
+
+    /*
     size_t size = sizeof(char) + sizeof(pid_t) + sizeof(Process*) + 3*(sizeof(double));
     Process *p = malloc(size);
     p->command = command;
-
+    */
     return p;
 }
 
@@ -32,6 +45,7 @@ Process *process_create(const char *command) {
 bool process_start(Process *p) {
     /* TODO: Implement */
     p->pid = fork();
+    int i = 0;
     if (p->pid < 0){
         fprintf(stderr, "Fork failed: %s\n", strerror(errno));
         return false;
