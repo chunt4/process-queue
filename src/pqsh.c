@@ -71,28 +71,24 @@ int main(int argc, char *argv[]) {
         else if (streq(command, "exit") || streq(command, "quit")) {
             break;
         } 
-        else if (streq(command, "add")){
-            break;
+        else if (sscanf(command, "add %[^\t\n]", argument) == 1){
+            scheduler_add(s, stdout, argument);
         }
         else if (streq(command, "status")){
-            char *queue;
+            scheduler_status(s, stdout, 0);
+        }
+        else if (sscanf(command, "status %[^\t\n]", argument) == 1){
             int flag;
-            sscanf(command, "%s %s", command, queue);
-            if (!streq(queue, "")){
-                if (streq(queue, "waiting"))
-                    flag |= WAITING;
-                else if (streq(queue, "running"))
-                    flag |= RUNNING;
-                else if (streq(queue, "finished"))
-                    flag |= FINISHED;
-                else
-                    printf("Unknown queue...\n");
-            
-                scheduler_status(s, stdout, flag);
-            }
-
+            if (streq(argument, "waiting"))
+                flag |= WAITING;
+            else if (streq(argument, "running"))
+                flag |= RUNNING;
+            else if (streq(argument, "finished"))
+                flag |= FINISHED;
             else
-                scheduler_status(s, stdout, 0);
+                printf("Unknown queue...\n");
+            
+            scheduler_status(s, stdout, flag);
         }
         else if (strlen(command)) {
             printf("Unknown command: %s\n", command);
