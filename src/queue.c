@@ -32,7 +32,12 @@ Process *   queue_pop(Queue *q) {
     /* TODO: Implement */
     Process *temp = q->head;
     q->head = q->head->next;
+    p->next = NULL;
     q->size--;
+
+    if (q->size == 0)
+        q->tail = NULL;
+
     return temp;
 }
 

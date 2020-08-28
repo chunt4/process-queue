@@ -17,14 +17,14 @@
  **/
 Process *process_create(const char *command) {
     /* TODO: Implement */
-    Process *p = (Process *)calloc(0, sizeof(Process));
+    Process *p = calloc(1, sizeof(Process));
     if (p == NULL)
         exit(1);
     
     // Set up parts of process
     strcpy(p->command, command);
     p->pid = 0;
-    p->arrival_time = 0.00;
+    p->arrival_time = timestamp();
     p->start_time = 0.00;
     p->end_time = 0.00;
     p->next = NULL;
