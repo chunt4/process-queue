@@ -29,11 +29,7 @@ Process *process_create(const char *command) {
     p->end_time = 0.00;
     p->next = NULL;
 
-    /*
-    size_t size = sizeof(char) + sizeof(pid_t) + sizeof(Process*) + 3*(sizeof(double));
-    Process *p = malloc(size);
-    p->command = command;
-    */
+ 
     return p;
 }
 
@@ -74,7 +70,7 @@ bool process_start(Process *p) {
  **/
 bool process_pause(Process *p) {
     /* TODO: Implement */
-    if(kill(p->pid,SIGSTOP) < 0){
+    if(!kill(p->pid,SIGSTOP)){
         return true;
     }
     else{
@@ -89,7 +85,7 @@ bool process_pause(Process *p) {
  **/
 bool process_resume(Process *p) {
     /* TODO: Implement */
-    if(kill(p->pid,SIGCONT) < 0){
+    if(!kill(p->pid,SIGCONT)){
         return true;
     }
     else{
