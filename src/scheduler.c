@@ -50,6 +50,9 @@ void scheduler_wait(Scheduler *s) {
      *  - Update Process metrics.
      *  - Update Scheduler metrics.
      **/
+
+    // MORE NOTES
+    // Metrics are s->total_turnaround_time and s->total_response_time
 }
 
 /* vim: set expandtab sts=4 sw=4 ts=8 ft=c: */
