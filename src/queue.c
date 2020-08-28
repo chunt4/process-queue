@@ -50,14 +50,30 @@ Process *   queue_remove(Queue *q, pid_t pid) {
     if (q->head->pid == pid)
         return queue_pop(q);
 
+/*
     for (Process *p = q->head; q->tail; p = p->next){
         if(pid == p->pid){
-            q->prev->next = p->next;
+            q->p = p->next;
             q->size--;
             return p;
         }
     }
-    return NULL;
+*/
+    Process *iter = q->head;
+    while (iter->next->pid != pid)
+        iter = iter->next;
+    Process *remove = iter->next;
+    
+    // Condition for if you are removing the tail
+    if (q->tail == remove){
+        q->tail = iter;
+        iter->next = NULL;
+    }
+    else
+        iter->next = iter->next->next;
+    q->size--;
+
+    return remove;
 }
 
 /**
@@ -70,7 +86,7 @@ void        queue_dump(Queue *q, FILE *fs) {
                 "PID", "COMMAND", "ARRIVAL", "START", "END");
     /* TODO: Display information for each item in Queue. */
     for (Process *p = q->head; q->tail; p=p->next){
-        fprintf(fs, "%6s %-30s %-13s %-13s %-13s\n", p->pid, p->command, p->arrival_time, p->start_time, p->end_time);
+        fprintf(fs, "%6d %-30s %.2f %.2f %.2f\n", p->pid, p->command, p->arrival_time, p->start_time, p->end_time);
     }
 }
 

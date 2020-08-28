@@ -33,21 +33,21 @@ int main(int argc, char *argv[]) {
     Scheduler *s = &PQShellScheduler;
 
     /* TODO: Parse command line options */
-    if (!parse_command_line_options(argc, argv[], &s)){
+    if (!parse_command_line_options(argc, argv, s)){
         fprintf(stderr, "Parsing Failure");
         return EXIT_FAILURE;
     }
 
     /* TODO: Register signal handlers */
-    if(!signal_register(signum, flags, handler)){
+    if(!signal_register(SIGALRM, 0, sigalrm_handler)){
         fprintf(stderr, "Signal handlers register failed");
         return EXIT_FAILURE;
     }    
 
     /* TODO: Start timer interrupt */
-    struct itimerval timer = calloc(1, sizeof(itimerval));
-    timer->it_interval->tv_usec = s->timeout;
-    timer->it_value->tv_usec = s->timeout;
+    struct itimerval timer;
+    timer.it_interval.tv_usec = s->timeout;
+    timer.it_value.tv_usec = s->timeout;
 
     if (setitimer(ITIMER_REAL, &timer, NULL) < 0)
         return EXIT_FAILURE;
@@ -64,11 +64,37 @@ int main(int argc, char *argv[]) {
         chomp(command);
         
         /* TODO: Handle add and status commands */
+        // Call scheduler_add with sscanf()
         if (streq(command, "help")) {
             help();
-        } else if (streq(command, "exit") || streq(command, "quit")) {
+        } 
+        else if (streq(command, "exit") || streq(command, "quit")) {
             break;
-        } else if (strlen(command)) {
+        } 
+        else if (streq(command, "add")){
+            break;
+        }
+        else if (streq(command, "status")){
+            char *queue;
+            int flag;
+            sscanf(command, "%s %s", command, queue);
+            if (!streq(queue, "")){
+                if (streq(queue, "waiting"))
+                    flag |= WAITING;
+                else if (streq(queue, "running"))
+                    flag |= RUNNING;
+                else if (streq(queue, "finished"))
+                    flag |= FINISHED;
+                else
+                    printf("Unknown queue...\n");
+            
+                scheduler_status(s, stdout, flag);
+            }
+
+            else
+                scheduler_status(s, stdout, 0);
+        }
+        else if (strlen(command)) {
             printf("Unknown command: %s\n", command);
         }
     }
