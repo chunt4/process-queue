@@ -28,14 +28,14 @@ void scheduler_add(Scheduler *s, FILE *fs, const char *command) {
  * @param   queue   Bitmask specifying which queues to display.
  **/
 void scheduler_status(Scheduler *s, FILE *fs, int queue) {
-    fprintf(fs, "Running = %4lu, Waiting = %4lu, Finished = %4lu, Turnaround = %05.2lf, Response = %05.2lf\n", &s->running.size, &s->waiting.size, &s->finished.size, &s->total_turnaround_time, &s->total_response_time);
+    fprintf(fs, "Running = %4lu, Waiting = %4lu, Finished = %4lu, Turnaround = %05.2lf, Response = %05.2lf\n", s->running.size, s->waiting.size, s->finished.size, (s->total_turnaround_time/(double)s->finished.size), (s->total_response_time/(double)s->finished.size));
     /* TODO: Complement implementation. */
     // Add stuff to fprintf
-    if (queue & WAITING && &s->waiting.size != 0)
+    if ((queue & WAITING) && s->waiting.size != 0)
         queue_dump(&s->waiting, fs);
-    if (queue & RUNNING && &s->running.size != 0)
+    if ((queue & RUNNING) && s->running.size != 0)
         queue_dump(&s->running, fs);
-    if (queue & FINISHED && &s->finished.size != 0)
+    if ((queue & FINISHED) && s->finished.size != 0)
         queue_dump(&s->finished, fs);
 }
 
@@ -45,9 +45,9 @@ void scheduler_status(Scheduler *s, FILE *fs, int queue) {
  **/
 void scheduler_next(Scheduler *s) {
     /* TODO: Dispatch to appropriate scheduler function. */
-    if (&s->policy == FIFO_POLICY)
+    if (s->policy == FIFO_POLICY)
         scheduler_fifo(s);
-    else if (&s->policy == RDRN_POLICY)
+    else if (s->policy == RDRN_POLICY)
         scheduler_rdrn(s);
 }
 
@@ -65,7 +65,8 @@ void scheduler_wait(Scheduler *s) {
 
     // MORE NOTES
     // Metrics are s->total_turnaround_time and s->total_response_time
-    while ((pid = waitpid(-1, NULL, WNOHAND)) > 0){
+    pid_t pid;
+    while ((pid = waitpid(-1, NULL, WNOHANG)) > 0){
         Process *found = queue_remove(&s->running, pid);
         // If process is NULL, then check waiting
         if (found == NULL){

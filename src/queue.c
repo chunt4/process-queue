@@ -32,7 +32,7 @@ Process *   queue_pop(Queue *q) {
     /* TODO: Implement */
     Process *temp = q->head;
     q->head = q->head->next;
-    p->next = NULL;
+    temp->next = NULL;
     q->size--;
 
     if (q->size == 0)
@@ -90,8 +90,18 @@ void        queue_dump(Queue *q, FILE *fs) {
     fprintf(fs, "%6s %-30s %-13s %-13s %-13s\n", 
                 "PID", "COMMAND", "ARRIVAL", "START", "END");
     /* TODO: Display information for each item in Queue. */
-    for (Process *p = q->head; q->tail; p=p->next){
-        fprintf(fs, "%6d %-30s %.2f %.2f %.2f\n", p->pid, p->command, p->arrival_time, p->start_time, p->end_time);
+    Process *p;
+    if (!q->head)
+        p = NULL;
+    else
+        p = q->head;
+
+    while(p != NULL){
+        fprintf(fs, "%6i %-30s %-13.2lf %-13.2f %-13.2lf\n", p->pid, p->command, p->arrival_time, p->start_time, p->end_time);
+        if (p->next)
+            p = p->next;
+        else
+            p = NULL;
     }
 }
 

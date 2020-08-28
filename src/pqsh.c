@@ -75,7 +75,7 @@ int main(int argc, char *argv[]) {
             scheduler_add(s, stdout, argument);
         }
         else if (streq(command, "status")){
-            scheduler_status(s, stdout, 0);
+            scheduler_status(s, stdout, 111);
         }
         else if (sscanf(command, "status %[^\t\n]", argument) == 1){
             int flag;
