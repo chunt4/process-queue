@@ -20,20 +20,32 @@
  **/
 void scheduler_rdrn(Scheduler *s) {
     /* TODO: Implement Round Robin Policy */
+    if (s->waiting.size == 0)
+        return;
+
     Process *p;
     if (s->running.size == s->cores){
         p = queue_pop(&s->running);
         if (!process_pause(p))
-            queue_push(&s->finished, p);
+            queue_push(&s->running, p);
         else
             queue_push(&s->waiting, p);
     }
+    // Passes put into running fails into waiting
     while (s->running.size < s->cores && s->waiting.size != 0){
-        if (p->pid == 0)
-            process_start(p);
-        else
-            process_resume(p);
-        queue_push(&s->running, p);
+        p = queue_pop(&s->waiting)
+        if (p->pid == 0){
+            if (!process_start(p))
+                queue_push(&s->waiting, p);
+            else
+                queue_push(&s->running, p);
+        }
+        else{
+            if (!process_resume(p))
+                queue_push(&s->waiting, p);
+            else
+                queue_push(&s->running, p);
+        }
     }
 }
 /* vim: set expandtab sts=4 sw=4 ts=8 ft=c: */

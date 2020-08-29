@@ -21,7 +21,7 @@ void scheduler_fifo(Scheduler *s) {
         if (!process_start(p))
             queue_push(&s->finished, p);
         else
-            queue_push(&s->finished, p);
+            queue_push(&s->running, p);
     }
 }
 
