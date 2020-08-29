@@ -60,6 +60,7 @@ approach implementing [Project 01].
 ## Errata
 
 > Describe any known errors, bugs, or deviations from the requirements.
+Know known bugs... we pass all of the tests and the code seems to work just fine.
 
 [Project 01]:       https://www3.nd.edu/~pbui/teaching/cse.30341.fa20/project01.html
 [CSE.30341.FA20]:   https://www3.nd.edu/~pbui/teaching/cse.30341.fa20/
