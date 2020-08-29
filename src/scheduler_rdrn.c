@@ -28,21 +28,23 @@ void scheduler_rdrn(Scheduler *s) {
         p = queue_pop(&s->running);
         if (!process_pause(p))
             queue_push(&s->running, p);
-        else
+        else{
             queue_push(&s->waiting, p);
+            
+        }
     }
     // Passes put into running fails into waiting
     while (s->running.size < s->cores && s->waiting.size != 0){
-        p = queue_pop(&s->waiting)
+        p = queue_pop(&s->waiting);
         if (p->pid == 0){
             if (!process_start(p))
-                queue_push(&s->waiting, p);
+                queue_push(&s->finished, p);
             else
                 queue_push(&s->running, p);
         }
         else{
             if (!process_resume(p))
-                queue_push(&s->waiting, p);
+                queue_push(&s->finished, p);
             else
                 queue_push(&s->running, p);
         }
