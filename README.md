@@ -7,7 +7,7 @@ This is [Project 01] of [CSE.30341.FA20].
 
 - Jake Hracho (jhracho@nd.edu)
 - Chris Hunt (chunt4@nd.edu)
-
+VIDEO: https://youtu.be/CeqA9N2GqJo
 ## Brainstorming
 
 The following are questions that should help you in thinking about how to
