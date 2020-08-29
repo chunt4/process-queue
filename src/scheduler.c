@@ -28,15 +28,24 @@ void scheduler_add(Scheduler *s, FILE *fs, const char *command) {
  * @param   queue   Bitmask specifying which queues to display.
  **/
 void scheduler_status(Scheduler *s, FILE *fs, int queue) {
-    fprintf(fs, "Running = %4lu, Waiting = %4lu, Finished = %4lu, Turnaround = %05.2lf, Response = %05.2lf\n", s->running.size, s->waiting.size, s->finished.size, (s->total_turnaround_time/(double)s->finished.size), (s->total_response_time/(double)s->finished.size));
+    fprintf(fs, "Running = %4lu, Waiting = %4lu, Finished = %4lu, Turnaround = %05.2lf, Response = %05.2lf\n", s->running.size, s->waiting.size, s->finished.size, (s->total_turnaround_time/s->finished.size), (s->total_response_time/s->finished.size));
     /* TODO: Complement implementation. */
     // Add stuff to fprintf
-    if ((queue & WAITING) && s->waiting.size != 0)
-        queue_dump(&s->waiting, fs);
-    if ((queue & RUNNING) && s->running.size != 0)
+    printf("\n");
+    if ((queue & RUNNING) && s->running.size != 0){
+        printf("Running Queue:\n");
         queue_dump(&s->running, fs);
-    if ((queue & FINISHED) && s->finished.size != 0)
-        queue_dump(&s->finished, fs);
+        printf("\n");
+    }
+    if ((queue & WAITING) && s->waiting.size != 0){
+        printf("Waiting Queue:\n");
+        queue_dump(&s->waiting, fs);
+        printf("\n");
+    }
+    if ((queue & FINISHED) && s->finished.size != 0){
+        printf("Finished Queue:\n");
+        queue_dump(&s->finished, fs);   
+    }
 }
 
 /**
