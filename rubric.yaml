@@ -1,0 +1,55 @@
+Source Code:
+  A. General:
+    1. Builds and cleans without warnings or errors:
+      Score: 0.5
+    2. Uses system calls appropriately:
+      Score: 1.0
+    3. Manages resources such as memory and files appropriately:
+      Score: 1.0
+    4. Is consistent, readable, and organized:
+      Comment: Remove dead code
+      Score: 0.75
+    5. Has regular commits and submitted on-time:
+      Comment: Please don't merge into master, that removes the ability for the grader
+        to make inline comments on your code
+      Score: 0.75
+  B. Structures / Functions:
+    1. Implements Process structure properly:
+      Comments:
+      - Fails locally and on CI (need to allocate size to argv in process_start)
+      - Need to exit with failure if execvp fails
+      Score: 1.5
+    2. Implements Queue structure properly:
+      Score: 4.0
+    3. Implements Timestamp function properly:
+      Score: 0.5
+  C. Scheduler:
+    1. Implements Add command properly:
+      Comment: Need to check if process_create fails
+      Score: 0.75
+    2. Implements Status command properly:
+      Score: 1.0
+    3. Implements Wait function properly:
+      Score: 2.0
+    4. Implements Timer behavior properly:
+      Score: 1.0
+    5. Implements FIFO scheduler behavior properly:
+      Score: 2.0
+    6. Implements RDRN scheduler behavior properly:
+      Score: 4.0
+
+Reflection:
+  A. Group Video Demonstration:
+    1. Exhibits reasonable audio and video quality:
+      Score: 0.5
+    2. Demonstrates passing automated tests:
+      Score: 1.0
+    3. Demonstrates working with manual input:
+      Score: 1.0
+    4. Discusses errata, quirks, or unresolved issues:
+      Score: 0.75
+    5. Discusses what the group learned from the project:
+      Score: 0.75
+
+Total: 20.75 + 4.0 = 24.75
+
